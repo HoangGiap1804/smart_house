@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "615794552356",
+    "firebase_url": "https://smarthome-a2ebf-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "smarthome-a2ebf",
+    "storage_bucket": "smarthome-a2ebf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615794552356:android:9a8bdb0dcc7362597eb2b1",
+        "android_client_info": {
+          "package_name": "com.example.smart_house"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBO6agzmHNqfiwy4CpLHbYLXwF-MKNFmos"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615794552356:android:7e3c00b7d16a013c7eb2b1",
+        "android_client_info": {
+          "package_name": "com.example.smart_locker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBO6agzmHNqfiwy4CpLHbYLXwF-MKNFmos"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
