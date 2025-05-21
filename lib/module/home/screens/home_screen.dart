@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:smart_house/module/home/bloc/chart_cubit.dart';
 import 'package:smart_house/module/home/widgets/button_action.dart';
 import 'package:smart_house/module/home/widgets/line_chart_example.dart';
+import 'package:smart_house/module/home/widgets/my_drawer.dart';
 import 'package:smart_house/module/home/widgets/zoomable_line_chart.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,12 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<FlSpot> spotsTem = [];
   final List<FlSpot> spotsHum = [];
   final List<FlSpot> spotsPPM = [];
-  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+      ),
+      drawer: MyDrawer(),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -48,12 +50,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       GetIt.instance<ChartCubit>().loadChartData(spotsTem, 0);
                       return ButtonAction(
                         text: "$data°C",
-                        onTap: (){
+                        onTap: () {
                           GetIt.instance<ChartCubit>().changeChart(0);
-                        }
+                        },
                       );
                     } else {
-                      return Text("Đang tải dữ liệu...");
+                      return Text("Loading...");
                     }
                   },
                 ),
@@ -67,13 +69,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       spotsHum.add(FlSpot(indexHum++, value));
                       GetIt.instance<ChartCubit>().loadChartData(spotsHum, 1);
                       return ButtonAction(
-                        text: "$data%",
-                        onTap: (){
+                        text: "Humidity $data%",
+                        onTap: () {
                           GetIt.instance<ChartCubit>().changeChart(1);
-                        }
+                        },
                       );
                     } else {
-                      return Text("Đang tải dữ liệu...");
+                      return Text("Loading...");
                     }
                   },
                 ),
@@ -87,14 +89,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       spotsPPM.add(FlSpot(indexPPM++, value));
                       GetIt.instance<ChartCubit>().loadChartData(spotsPPM, 2);
                       return ButtonAction(
-                        text: "$data%",
-                        onTap: (){
-                          GetIt.instance<ChartCubit>().changeChart(2)
-                          ;
-                        }
+                        text: "PPM $data%",
+                        onTap: () {
+                          GetIt.instance<ChartCubit>().changeChart(2);
+                        },
                       );
                     } else {
-                      return Text("Đang tải dữ liệu...");
+                      return Text("Loading...");
                     }
                   },
                 ),
@@ -112,8 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                ButtonAction(text: "Turn", onTap: (){}),
-                ButtonAction(text: "Turn on", onTap: (){},),
+                ButtonAction(text: "Turn", onTap: () {}),
+                ButtonAction(text: "Turn on", onTap: () {}),
               ],
             ),
           ],
