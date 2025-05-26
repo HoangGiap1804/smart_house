@@ -3,17 +3,23 @@ import 'package:flutter/material.dart';
 class ButtonAction extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
-  const ButtonAction({super.key, required this.text, required this.onTap});
+  final List<Color>? colorsLinear;
+  const ButtonAction({
+    super.key, 
+    required this.text, 
+    required this.onTap,
+    this.colorsLinear,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFF6A5AE0), Color(0xFF8E2DE2)],
+          gradient: LinearGradient(
+            colors: colorsLinear ?? [Color(0xFF6A5AE0), Color(0xFF8E2DE2)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),

@@ -19,28 +19,28 @@ class _ZoomableLineChartState extends State<ZoomableLineChart> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<ChartCubit, ChartState>(
-      listener: (context, state){
-        if(state is ChartLoading){
-        setState(() {
-        switch (state.index) {
-                  case 0:
-                    spotsTem = state.list;
-                    break;
-                  case 1:
-                    spotsHumidity = state.list;
-                    break;
-                  case 2:
-                    spotsPPM = state.list;
-                    break;
-                  default:
-                }
-        });
+      listener: (context, state) {
+        if (state is ChartLoading) {
+          setState(() {
+            switch (state.index) {
+              case 0:
+                spotsTem = state.list;
+                break;
+              case 1:
+                spotsHumidity = state.list;
+                break;
+              case 2:
+                spotsPPM = state.list;
+                break;
+              default:
+            }
+          });
         }
-        if(state is ChartChanged){
-        setState(() {
-          index = state.index;
-          print("Co goi den day $index");
-        });
+        if (state is ChartChanged) {
+          setState(() {
+            index = state.index;
+            print("Co goi den day $index");
+          });
         }
       },
       child: InteractiveViewer(
@@ -56,26 +56,43 @@ class _ZoomableLineChartState extends State<ZoomableLineChart> {
           child: LineChart(
             LineChartData(
               minX: 0,
-              maxX: 100,
+              maxX: 
+                  (index == 0)
+                      ? (spotsTem.isNotEmpty) ? spotsTem.length + 10 : 100
+                      : (index == 1)
+                      ? (spotsHumidity.isNotEmpty) ? spotsHumidity.length + 10 : 100
+                      : (spotsHumidity.isNotEmpty) ? spotsPPM.length + 100 : 100,
               minY: 0,
-              maxY: 100,
+              maxY: 
+                  (index == 0)
+                      ? (spotsTem.isNotEmpty) ? spotsTem.reduce((a, b) => a.y > b.y ? a : b).y + 10 : 100
+                      : (index == 1)
+                      ? (spotsHumidity.isNotEmpty) ? spotsHumidity.reduce((a, b) => a.y > b.y ? a : b).y + 10 : 100
+                      : (spotsHumidity.isNotEmpty) ? spotsPPM.reduce((a, b) => a.y > b.y ? a : b).y + 100 : 100,
+
               lineTouchData: LineTouchData(enabled: true),
               gridData: FlGridData(show: true),
               titlesData: FlTitlesData(
                 bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(showTitles: true, interval: 10),
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    interval: 10
+                  ),
                 ),
                 leftTitles: AxisTitles(
                   sideTitles: SideTitles(
                     showTitles: true,
-                    interval: 10,
+                  interval: (index == 0)
+                      ? 10
+                      : (index == 1)
+                      ? 10
+                      : 100,
+
                     reservedSize: 40, // 👈 Chừa đủ không gian để label nằm gọn
                     getTitlesWidget: (value, meta) {
                       return Text(
                         value.toStringAsFixed(0),
-                        style: const TextStyle(
-                          fontSize: 12,
-                        ),
+                        style: const TextStyle(fontSize: 12),
                         textAlign: TextAlign.center, // 👈 đảm bảo canh giữa
                         overflow: TextOverflow.ellipsis, // 👈 tránh vỡ dòng
                       );
@@ -86,11 +103,12 @@ class _ZoomableLineChartState extends State<ZoomableLineChart> {
               borderData: FlBorderData(show: true),
               lineBarsData: [
                 LineChartBarData(
-                  spots: (index == 0) 
-                  ? spotsTem
-                  : (index == 1)
-                  ? spotsHumidity
-                  : spotsPPM,
+                  spots:
+                      (index == 0)
+                          ? spotsTem
+                          : (index == 1)
+                          ? spotsHumidity
+                          : spotsPPM,
                   isCurved: false,
                   color: Colors.blue,
                   barWidth: 3,
@@ -99,9 +117,7 @@ class _ZoomableLineChartState extends State<ZoomableLineChart> {
                     end: Alignment.bottomCenter,
                     colors: [Colors.red, Colors.blue],
                   ),
-                  belowBarData: BarAreaData(
-                    show: true,
-                  ),
+                  belowBarData: BarAreaData(show: true),
                   dotData: FlDotData(
                     show: true,
                     getDotPainter: (spot, percent, barData, index) {
@@ -118,7 +134,7 @@ class _ZoomableLineChartState extends State<ZoomableLineChart> {
             ),
           ),
         ),
-      )
+      ),
     );
   }
 }
