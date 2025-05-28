@@ -68,14 +68,20 @@ class _ZoomableLineChartState extends State<ZoomableLineChart> {
                       ? (spotsTem.isNotEmpty) ? spotsTem.reduce((a, b) => a.y > b.y ? a : b).y + 10 : 100
                       : (index == 1)
                       ? (spotsHumidity.isNotEmpty) ? spotsHumidity.reduce((a, b) => a.y > b.y ? a : b).y + 10 : 100
-                      : (spotsHumidity.isNotEmpty) ? spotsPPM.reduce((a, b) => a.y > b.y ? a : b).y + 100 : 100,
+                      : (spotsHumidity.isNotEmpty) ? spotsPPM.reduce((a, b) => a.y > b.y ? a : b).y + 500 : 100,
 
               lineTouchData: LineTouchData(enabled: true),
               gridData: FlGridData(show: true),
               titlesData: FlTitlesData(
                 bottomTitles: AxisTitles(
                   sideTitles: SideTitles(
-                    showTitles: true,
+                    showTitles: false,
+                    interval: 10
+                  ),
+                ),
+                topTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: false,
                     interval: 10
                   ),
                 ),

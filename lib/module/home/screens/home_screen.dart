@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       spotsPPM.add(FlSpot(indexPPM++, value));
                       GetIt.instance<ChartCubit>().loadChartData(spotsPPM, 2);
                       return ButtonAction(
-                        text: "PPM $data%",
+                        text: "PPM $data",
                         onTap: () {
                           GetIt.instance<ChartCubit>().changeChart(2);
                         },
@@ -100,15 +100,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            SizedBox(height: 100),
+            SizedBox(height: 50),
             Center(
               child: SizedBox(
-                height: 400,
-                width: 300,
+                height: 300,
+                width: 400,
                 child: ZoomableLineChart(),
               ),
             ),
-            SizedBox(height: 50),
+            SizedBox(height: 10),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -118,66 +118,71 @@ class _HomeScreenState extends State<HomeScreen> {
                     if (snapshot.hasData &&
                         snapshot.data!.snapshot.value != null) {
                       final data = snapshot.data!.snapshot.value as bool;
-                      final isAuto = data == true; 
-                        return ButtonAction(
-                          text: "Auto $data",
-                          colorsLinear: (isAuto) 
-                            ? [ Color(0xFFa8e063),Color(0xFF56ab2f)] 
-                            : [Color(0xFFFF416C), Color(0xFFFF4B2B),],
-                          onTap: () {
-                            dbRef.child('control/auto').set(!isAuto);
-                            dbRef.child('control/blow').set(0);
-                          },
-                        );
+                      final isAuto = data == true;
+                      return ButtonAction(
+                        text: "Auto $data",
+                        colorsLinear:
+                            (isAuto)
+                                ? [Color(0xFFa8e063), Color(0xFF56ab2f)]
+                                : [Color(0xFFFF416C), Color(0xFFFF4B2B)],
+                        onTap: () {
+                          dbRef.child('control/auto').set(!isAuto);
+                          dbRef.child('control/blow').set(0);
+                        },
+                      );
                     } else {
                       return Text("Loading...");
                     }
                   },
                 ),
+                SizedBox(height: 10),
                 StreamBuilder(
                   stream: dbRef.child('control/blow').onValue,
                   builder: (context, snapshot) {
                     if (snapshot.hasData &&
                         snapshot.data!.snapshot.value != null) {
                       final data = snapshot.data!.snapshot.value as num;
-                      final blow = data; 
-                        return ButtonAction(
-                          text: "Blow in",
-                          colorsLinear: (blow == 1) 
-                            ? [ Color(0xFFa8e063),Color(0xFF56ab2f)] 
-                            : [Color(0xFFFF416C), Color(0xFFFF4B2B),],
-                          onTap: () {
-                            (blow != 1)
-                            ? dbRef.child('control/blow').set(1)
-                            : dbRef.child('control/blow').set(0);
+                      final blow = data;
+                      return ButtonAction(
+                        text: "Blow in",
+                        colorsLinear:
+                            (blow == 1)
+                                ? [Color(0xFFa8e063), Color(0xFF56ab2f)]
+                                : [Color(0xFFFF416C), Color(0xFFFF4B2B)],
+                        onTap: () {
+                          (blow != 1)
+                              ? dbRef.child('control/blow').set(1)
+                              : dbRef.child('control/blow').set(0);
 
-                            dbRef.child('control/auto').set(false);
-                          },
-                        );
+                          dbRef.child('control/auto').set(false);
+                        },
+                      );
                     } else {
                       return Text("Loading...");
                     }
                   },
                 ),
+                SizedBox(height: 10),
                 StreamBuilder(
                   stream: dbRef.child('control/blow').onValue,
                   builder: (context, snapshot) {
                     if (snapshot.hasData &&
                         snapshot.data!.snapshot.value != null) {
                       final data = snapshot.data!.snapshot.value as num;
-                        return ButtonAction(
-                          text: "Blow out",
-                          colorsLinear: (data == 2) 
-                            ? [ Color(0xFFa8e063),Color(0xFF56ab2f)] 
-                            : [Color(0xFFFF416C), Color(0xFFFF4B2B),],
-                          onTap: () {
-                            (data != 2)
-                            ? dbRef.child('control/blow').set(2)
-                            : dbRef.child('control/blow').set(0);
+                      return ButtonAction(
+                        text: "Blow out",
+                        colorsLinear:
+                            (data == 2)
+                                ? [Color(0xFFa8e063), Color(0xFF56ab2f)]
+                                : [Color(0xFFFF416C), Color(0xFFFF4B2B)],
+                        onTap: () {
+                          (data != 2)
+                              ? dbRef.child('control/blow').set(2)
+                              : dbRef.child('control/blow').set(0);
 
-                            dbRef.child('control/auto').set(false);
-                          },
-                        );
+                          dbRef.child('control/auto').set(false);
+                        },
+                      );
                     } else {
                       return Text("Loading...");
                     }

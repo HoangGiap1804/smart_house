@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_house/module/home/screens/history_page.dart';
 import 'package:smart_house/module/home/screens/home_screen.dart';
+import 'package:smart_house/module/home/screens/hour_sensor_page.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key});
@@ -37,6 +38,16 @@ class MyDrawer extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => HistoryPage()),
+                  );
+                },
+              ),
+              _buildDrawerItem(
+                icon: Icons.person,
+                text: 'Hour sensor',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => HourSensorPage()),
                   );
                 },
               ),

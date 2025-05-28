@@ -7,43 +7,22 @@ import 'package:smart_house/module/home/widgets/sensor_data.dart';
 import 'package:smart_house/module/home/widgets/sensor_day.dart';
 import 'package:smart_house/module/home/widgets/sensor_line_chart_day.dart';
 
-class HistoryPage extends StatefulWidget {
+class HourSensorPage extends StatefulWidget {
+  const HourSensorPage({super.key});
+
   @override
-  _HistoryPageState createState() => _HistoryPageState();
+  State<HourSensorPage> createState() => _HourSensorPageState();
 }
 
-class _HistoryPageState extends State<HistoryPage> {
+class _HourSensorPageState extends State<HourSensorPage> {
   DateTime selectedDate = DateTime.now();
 
   final List<SensorData> data = [];
 
   // Hàm mở DatePicker
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-
-      // Gọi API hoặc load dữ liệu theo ngày ở đây
-      print("Ngày được chọn: ${DateFormat('dd/MM/yyyy').format(selectedDate)}");
-    }
-  }
-
   Future<List<SensorDay>>? fetchSensorData() async {
     final firestore = FirebaseFirestore.instance;
-    final docSnapshot =
-        await firestore
-            .collection('data')
-            .doc(DateFormat('yyyy_MM_dd').format(selectedDate).toString())
-            .get();
-    print("day picked");
-    print(DateFormat('yyyy_MM_dd').format(selectedDate));
+    final docSnapshot = await firestore.collection('data').doc('hour').get();
 
     if (!docSnapshot.exists) return [];
 
@@ -88,38 +67,15 @@ class _HistoryPageState extends State<HistoryPage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Nút chọn ngày
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Date: ${DateFormat('dd/MM/yyyy').format(selectedDate)}',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-                ButtonAction(
-                  text: "Select day",
-                  onTap: () => _selectDate(context),
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-
-            // Dữ liệu lịch sử theo ngày sẽ được hiển thị ở đây
-            // Expanded(
-            //   child: Center(
-            //     child: SizedBox(
-            //       height: 400,
-            //       child: SensorLineChart(data: data),
-            //     ),
-            //   ),
-            // ),
             FutureBuilder<List<SensorDay>>(
               future: fetchSensorData(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return Center(
+                    child: CircularProgressIndicator()
+                  );
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -131,7 +87,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   child: Center(
                     child: SizedBox(
                       height: 400,
-                      child: SensorLineChartDay(data: data, unit: "Hour"),
+                      child: SensorLineChartDay(data: data, unit: "Minute"),
                     ),
                   ),
                 );

@@ -6,8 +6,9 @@ import 'package:smart_house/module/home/widgets/sensor_day.dart';
 
 class SensorLineChartDay extends StatelessWidget {
   final List<SensorDay> data;
+  final String unit;
 
-  SensorLineChartDay({required this.data});
+  SensorLineChartDay({required this.data, required this.unit});
 
   List<FlSpot> _mapToSpots(List<SensorDay> data, String field) {
     return data.asMap().entries.map((entry) {
@@ -48,6 +49,42 @@ class SensorLineChartDay extends StatelessWidget {
           Expanded(
             child: LineChart(
               LineChartData(
+                lineTouchData: LineTouchData(
+                  touchTooltipData: LineTouchTooltipData(
+                    getTooltipItems: (touchedSpots) {
+                      final minute = touchedSpots.first.x.toInt();
+                      double? temperature, humidity, ppm;
+
+                      for (var spot in touchedSpots) {
+                        switch (spot.barIndex) {
+                          case 0:
+                            temperature = spot.y;
+                            break;
+                          case 1:
+                            humidity = spot.y;
+                            break;
+                          case 2:
+                            ppm = spot.y;
+                            break;
+                        }
+                      }
+
+                      List<String> text = [
+                        '$unit: $minute\ntemperature: ${temperature?.toStringAsFixed(1) ?? '-'}',
+                        'humidity: ${humidity?.toStringAsFixed(1) ?? '-'}',
+                        'ppm: ${ppm?.toStringAsFixed(1) ?? '-'}',
+                      ];
+                      int index = 0;
+                      return touchedSpots.map((spot) {
+                        return LineTooltipItem(
+                          text[index++],
+                          const TextStyle(color: Colors.white),
+                        );
+                      }).toList();
+                    },
+                  ),
+                  handleBuiltInTouches: true,
+                ),
                 lineBarsData: [
                   _buildLine(data, 'temperature', Colors.redAccent),
                   _buildLine(data, 'humidity', Colors.blueAccent),
@@ -57,7 +94,7 @@ class SensorLineChartDay extends StatelessWidget {
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      interval: 1,
+                      interval: 2,
                       getTitlesWidget: (value, meta) {
                         int index = value.toInt();
                         if (index < 0 || index >= data.length)
