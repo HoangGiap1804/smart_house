@@ -1,15 +1,43 @@
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class NotificationService {
-  Future<void> handle(RemoteMessage message) async {
-    print("🔔 Background notification received: ${message.messageId}");
-    // Thêm logic xử lý khác ở đây
-  }
-}
+  static final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  await NotificationService().handle(message);
+  static Future<void> initialize() async {
+    const AndroidInitializationSettings androidSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    const InitializationSettings initSettings = InitializationSettings(
+      android: androidSettings,
+    );
+
+    await _localNotificationsPlugin.initialize(initSettings);
+
+    // Lắng nghe tin nhắn khi app đang ở foreground
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+
+      if (notification != null && android != null) {
+        _localNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              'high_importance_channel', // ID kênh
+              'High Importance Notifications',
+              channelDescription:
+                  'This channel is used for important notifications.',
+              importance: Importance.max,
+              priority: Priority.high,
+              icon: '@mipmap/ic_launcher',
+            ),
+          ),
+        );
+      }
+    });
+  }
 }

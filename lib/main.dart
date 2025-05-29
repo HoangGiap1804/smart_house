@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:smart_house/module/home/bloc/chart_cubit.dart';
 import 'package:smart_house/module/home/screens/home_screen.dart';
 import 'package:smart_house/services/api.dart';
+import 'package:smart_house/services/notification_service.dart';
 
 @pragma('vm:entry-point')
 Future<void> handleMessage(RemoteMessage message) async {
@@ -20,6 +21,7 @@ void main() async {
   await Api().initNotifications();
   FirebaseMessaging.onBackgroundMessage(handleMessage);
   GetIt.instance.registerSingleton<ChartCubit>(ChartCubit());
+  await NotificationService.initialize();
   runApp(const MyApp());
 }
 

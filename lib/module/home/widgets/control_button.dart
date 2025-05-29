@@ -18,6 +18,9 @@ class _ControlButtonState extends State<ControlButton> {
 
   int blowValue = 0;
   bool auto = false;
+  double temlow = 30;
+  double temhigh = 40;
+  double ppm = 600;
 
   @override
   void initState() {
@@ -36,6 +39,27 @@ class _ControlButtonState extends State<ControlButton> {
         });
       }
     });
+    // autoSubscription = dbRef.child('control/ppm').onValue.listen((event) {
+    //   if (event.snapshot.value != null) {
+    //     setState(() {
+    //       ppm = event.snapshot.value as double;
+    //     });
+    //   }
+    // });
+    // autoSubscription = dbRef.child('control/temlow').onValue.listen((event) {
+    //   if (event.snapshot.value != null) {
+    //     setState(() {
+    //       temlow = event.snapshot.value as double;
+    //     });
+    //   }
+    // });
+    // autoSubscription = dbRef.child('control/temhigh').onValue.listen((event) {
+    //   if (event.snapshot.value != null) {
+    //     setState(() {
+    //       temhigh = event.snapshot.value as double;
+    //     });
+    //   }
+    // });
   }
 
   @override
@@ -82,6 +106,36 @@ class _ControlButtonState extends State<ControlButton> {
             dbRef.child('control/auto').set(!auto);
           },
         ),
+        // SpeedDialChild(
+        //   child: Text("$ppm"),
+        //   backgroundColor:
+        //       (auto == true) ? Color(0xFF56ab2f) : Color(0xFFFF4B2B),
+        //   label: 'PPM',
+        //   onTap: () {
+        //     dbRef.child('control/blow').set(0);
+        //     dbRef.child('control/auto').set(!auto);
+        //   },
+        // ),
+        // SpeedDialChild(
+        //   child: Text("$temlow"),
+        //   backgroundColor:
+        //       (auto == true) ? Color(0xFF56ab2f) : Color(0xFFFF4B2B),
+        //   label: 'Temperature Low',
+        //   onTap: () {
+        //     dbRef.child('control/blow').set(0);
+        //     dbRef.child('control/auto').set(!auto);
+        //   },
+        // ),
+        // SpeedDialChild(
+        //   child: Text("$temhigh"),
+        //   backgroundColor:
+        //       (auto == true) ? Color(0xFF56ab2f) : Color(0xFFFF4B2B),
+        //   label: 'Temperature High',
+        //   onTap: () {
+        //     dbRef.child('control/blow').set(0);
+        //     dbRef.child('control/auto').set(!auto);
+        //   },
+        // ),
       ],
     );
   }

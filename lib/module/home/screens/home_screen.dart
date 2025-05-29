@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get_it/get_it.dart';
 import 'package:smart_house/module/home/bloc/chart_cubit.dart';
@@ -10,6 +11,7 @@ import 'package:smart_house/module/home/widgets/button_action.dart';
 import 'package:smart_house/module/home/widgets/control_button.dart';
 import 'package:smart_house/module/home/widgets/line_chart_example.dart';
 import 'package:smart_house/module/home/widgets/my_drawer.dart';
+import 'package:smart_house/module/home/widgets/setting.dart';
 import 'package:smart_house/module/home/widgets/zoomable_line_chart.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
   double indexTem = 0;
   double indexHum = 0;
   double indexPPM = 0;
-  String text = "Tempareture";
   final List<FlSpot> spotsTem = [];
   final List<FlSpot> spotsHum = [];
   final List<FlSpot> spotsPPM = [];
@@ -39,29 +40,16 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 10),
-            Center(
-              child: Text(
-                text,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.deepPurple,
-                  letterSpacing: 1.2,
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
             Center(
               child: SizedBox(
-                height: 300,
+                height: 350,
                 width: 400,
                 child: ZoomableLineChart(),
               ),
             ),
             SizedBox(height: 10),
             SizedBox(
-              height: 200,
+              height: 600,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -78,9 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           text: "$data°C",
                           onTap: () {
                             GetIt.instance<ChartCubit>().changeChart(0);
-                            setState(() {
-                              text = "Tempature";
-                            });
                           },
                         );
                       } else {
@@ -101,9 +86,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           text: "Humidity $data%",
                           onTap: () {
                             GetIt.instance<ChartCubit>().changeChart(1);
-                            setState(() {
-                              text = "Humidity";
-                            });
                           },
                         );
                       } else {
@@ -124,9 +106,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           text: "PPM $data",
                           onTap: () {
                             GetIt.instance<ChartCubit>().changeChart(2);
-                            setState(() {
-                              text = "PPM";
-                            });
                           },
                         );
                       } else {
@@ -134,6 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
                     },
                   ),
+                  Setting(),
+                  SizedBox(height: 50,)
                 ],
               ),
             ),

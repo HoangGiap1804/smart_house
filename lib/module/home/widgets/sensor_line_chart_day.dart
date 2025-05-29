@@ -47,7 +47,7 @@ class SensorLineChartDay extends StatelessWidget {
           BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4)),
         ],
       ),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(30),
       child: Column(
         children: [
           // Chart
@@ -138,7 +138,7 @@ class SensorLineChartDay extends StatelessWidget {
                 ),
                 gridData: FlGridData(
                   show: true,
-                  drawVerticalLine: true,
+                  drawVerticalLine: false,
                   verticalInterval: 1,
                   getDrawingHorizontalLine:
                       (value) =>
@@ -179,7 +179,7 @@ class SensorLineChartDay extends StatelessWidget {
   LineChartBarData _buildLine(List<SensorDay> data, String field, Color color) {
     return LineChartBarData(
       spots: _mapToSpots(data, field),
-      isCurved: true,
+      isCurved: false,
       gradient: LinearGradient(colors: [color.withOpacity(0.7), color]),
       barWidth: 3,
       dotData: FlDotData(show: false),
