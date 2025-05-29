@@ -25,7 +25,7 @@ class MyDrawer extends StatelessWidget {
                 icon: Icons.home,
                 text: 'Home',
                 onTap: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (_) => HomeScreen()),
                   );
@@ -35,7 +35,7 @@ class MyDrawer extends StatelessWidget {
                 icon: Icons.person,
                 text: 'History',
                 onTap: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (_) => HistoryPage()),
                   );
@@ -43,9 +43,9 @@ class MyDrawer extends StatelessWidget {
               ),
               _buildDrawerItem(
                 icon: Icons.person,
-                text: 'Hour sensor',
+                text: 'Sensor data 1 hour',
                 onTap: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (_) => HourSensorPage()),
                   );

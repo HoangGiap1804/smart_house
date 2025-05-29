@@ -62,7 +62,7 @@ class _HourSensorPageState extends State<HourSensorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Lịch sử')),
+      appBar: AppBar(title: Text('Sensor data 1 hour')),
       drawer: MyDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -73,9 +73,7 @@ class _HourSensorPageState extends State<HourSensorPage> {
               future: fetchSensorData(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator()
-                  );
+                  return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -87,7 +85,11 @@ class _HourSensorPageState extends State<HourSensorPage> {
                   child: Center(
                     child: SizedBox(
                       height: 400,
-                      child: SensorLineChartDay(data: data, unit: "Minute"),
+                      child: SensorLineChartDay(
+                        data: data,
+                        unit: "Minute",
+                        maxX: 60,
+                      ),
                     ),
                   ),
                 );

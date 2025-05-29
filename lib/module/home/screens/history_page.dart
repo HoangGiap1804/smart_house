@@ -55,6 +55,7 @@ class _HistoryPageState extends State<HistoryPage> {
     // Lặp qua từng giờ
     for (final entry in data.entries) {
       final hour = int.tryParse(entry.key);
+      print("Key hour $hour");
       final rawValue = entry.value.toString().split(',');
 
       if (hour != null && rawValue.length == 3) {
@@ -83,7 +84,7 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Lịch sử')),
+      appBar: AppBar(title: Text('HISTORY')),
       drawer: MyDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -131,7 +132,11 @@ class _HistoryPageState extends State<HistoryPage> {
                   child: Center(
                     child: SizedBox(
                       height: 400,
-                      child: SensorLineChartDay(data: data, unit: "Hour"),
+                      child: SensorLineChartDay(
+                        data: data,
+                        unit: "Hour",
+                        maxX: 24,
+                      ),
                     ),
                   ),
                 );

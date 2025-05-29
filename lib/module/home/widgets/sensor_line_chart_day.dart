@@ -7,8 +7,13 @@ import 'package:smart_house/module/home/widgets/sensor_day.dart';
 class SensorLineChartDay extends StatelessWidget {
   final List<SensorDay> data;
   final String unit;
+  final int maxX;
 
-  SensorLineChartDay({required this.data, required this.unit});
+  SensorLineChartDay({
+    required this.data,
+    required this.unit,
+    required this.maxX,
+  });
 
   List<FlSpot> _mapToSpots(List<SensorDay> data, String field) {
     return data.asMap().entries.map((entry) {
@@ -17,13 +22,13 @@ class SensorLineChartDay extends StatelessWidget {
 
       switch (field) {
         case 'temperature':
-          return FlSpot(index.toDouble(), d.temperature);
+          return FlSpot(d.hour.toDouble(), d.temperature);
         case 'humidity':
-          return FlSpot(index.toDouble(), d.humidity);
+          return FlSpot(d.hour.toDouble(), d.humidity);
         case 'ppm':
-          return FlSpot(index.toDouble(), d.ppm);
+          return FlSpot(d.hour.toDouble(), d.ppm);
         default:
-          return FlSpot(index.toDouble(), 0);
+          return FlSpot(d.hour.toDouble(), 0);
       }
     }).toList();
   }
@@ -97,13 +102,12 @@ class SensorLineChartDay extends StatelessWidget {
                       interval: 2,
                       getTitlesWidget: (value, meta) {
                         int index = value.toInt();
-                        if (index < 0 || index >= data.length)
-                          return Container();
+                        if (index < 0 || index >= maxX) return SizedBox();
                         return RotatedBox(
                           quarterTurns:
                               1, // Xoay 90 độ ngược chiều kim đồng hồ (1 = 90°, 2 = 180°, 3 = 270°)
                           child: Text(
-                            data[index].hour.toString(),
+                            index.toString(),
                             style: TextStyle(fontSize: 10),
                           ),
                         );
@@ -113,7 +117,7 @@ class SensorLineChartDay extends StatelessWidget {
                   leftTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      interval: 10,
+                      interval: 100,
                       reservedSize: 40,
                       getTitlesWidget: (value, meta) {
                         return Text(
@@ -148,7 +152,7 @@ class SensorLineChartDay extends StatelessWidget {
                   border: Border.all(color: Colors.grey.shade300),
                 ),
                 minX: 0,
-                maxX: data.length.toDouble() - 1,
+                maxX: maxX.toDouble(),
               ),
             ),
           ),
@@ -159,11 +163,11 @@ class SensorLineChartDay extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildLegendItem(Colors.redAccent, 'Nhiệt độ'),
+                _buildLegendItem(Colors.redAccent, 'Temperature'),
                 SizedBox(width: 16),
-                _buildLegendItem(Colors.blueAccent, 'Độ ẩm'),
+                _buildLegendItem(Colors.blueAccent, 'Humidity'),
                 SizedBox(width: 16),
-                _buildLegendItem(Colors.green, 'Khí PPM'),
+                _buildLegendItem(Colors.green, 'PPM'),
               ],
             ),
           ),
